@@ -42,7 +42,7 @@ const StyledTextField = ({ name, label, rules, required, disabled, ...props }) =
 
 StyledTextField.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   rules: PropTypes.object,
   required: PropTypes.bool,
   Icon: PropTypes.elementType,
@@ -53,7 +53,7 @@ export const StyledTextFieldRoot = styled(TextField)`
   .MuiInputBase-input {
     box-shadow: black !important;
   }
-
+  min-width: 230px;
   .MuiOutlinedInput-root {
     letter-spacing: 0.45px;
   }

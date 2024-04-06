@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '...api url'
+const API_URL = 'http://localhost:4000/api'
 
 export const AUTHORIZATION = 'Authorization'
 

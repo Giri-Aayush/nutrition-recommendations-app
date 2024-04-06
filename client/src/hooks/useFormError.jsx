@@ -6,21 +6,27 @@ export default function useFormError() {
 
   const handleFormError = useCallback(
     error => {
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const [, info] = Object.entries(error)?.[0]
-
-      if (Array.isArray(info)) {
-        info.map(item => {
-          const [, info] = Object.entries(item)[0]
-          enqueueSnackbar(info.message || '', {
-            variant: 'error',
+      const processError = errorInfo => {
+        if (Array.isArray(errorInfo)) {
+          errorInfo.forEach(errorItem => {
+            const [, itemInfo] = Object.entries(errorItem)[0]
+            console.log(itemInfo)
+            enqueueSnackbar(itemInfo.message || '', {
+              variant: 'error',
+            })
           })
-        })
-      } else {
-        enqueueSnackbar(info.message || '', {
-          variant: 'error',
-        })
+        } else {
+          const [, nestedErrorInfo] = Object.entries(errorInfo)[0]
+          if (Object.entries(errorInfo).length !== 0 && errorInfo.message === undefined) {
+            processError(nestedErrorInfo)
+          } else {
+            enqueueSnackbar(errorInfo.message || '', {
+              variant: 'error',
+            })
+          }
+        }
       }
+      processError(error)
     },
     [enqueueSnackbar],
   )
