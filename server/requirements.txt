@@ -1,0 +1,5 @@
+flask==3.0.2
+flask_pymongo==2.3.0
+dnspython==2.6.1
+python-dotenv==1.0.1
+pathlib==1.0.1
