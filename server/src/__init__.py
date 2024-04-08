@@ -1,12 +1,12 @@
 from src.routes import api
-from flask import Flask
+from flask import Flask, g
 import os
 from flask_cors import CORS
 from src.config.config import Config
 from dotenv import load_dotenv
-from flask_pymongo import PyMongo
 
 load_dotenv()
+
 
 app = Flask(__name__)
 
@@ -18,7 +18,6 @@ app.env = config.ENV
 
 app.config['MONGO_URI'] = os.environ.get("MONGO_URI")
 
-mongo = PyMongo(app)
 
 # import models to let the migrate tool know
 # from src.models.user_model import User

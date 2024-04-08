@@ -10,7 +10,7 @@ const Logo = () => {
       variant="h5"
       fontWeight={500}
       letterSpacing={0.7}>
-      Nutrition.Ai
+      recipes.ai
     </Typography>
   )
 }
