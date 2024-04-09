@@ -20,4 +20,9 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
+  build: {
+    chunkSizeWarningLimit: 40000000,
+    minify: true,
+    outDir: './build',
+  },
 })
