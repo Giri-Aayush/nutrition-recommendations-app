@@ -1,8 +1,11 @@
 flask==3.0.2
-flask_pymongo==2.3.0
 dnspython==2.6.1
 python-dotenv==1.0.1
 pathlib==1.0.1
 flask_cors==4.0.0
 pymongo===4.6.3
-requests
+pandas
+numpy
+faiss-cpu
+setuptools
+packaging

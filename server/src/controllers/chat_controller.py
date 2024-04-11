@@ -1,9 +1,10 @@
 from flask import request, Response, json, Blueprint
 from pymongo import MongoClient
-from bson import ObjectId
 import os
-import requests
 import datetime
+from src.ml.predict_recipes import predict
+import json as jsonpy
+
 
 chat = Blueprint("chat", __name__)
 
@@ -30,15 +31,18 @@ def create_chat():
             mimetype="application/json",
         )
 
-    response = requests.post(os.environ.get("ML_URI")+'/pred', json={
-        "inp": ingredients
-    })
+    dish_name_out, instruction_str_out = predict(ingredients, 1)
+
+    dish_name = dish_name_out[0],
+    instruction = jsonpy.loads(instruction_str_out[0])
 
     current_datetime = datetime.datetime.now()
+
     try:
         chat = chats_db.insert_one({
-            "result": response.text.strip(),
-            "user_ingredients": ingredients,
+            "dish_name": dish_name,
+            "instruction": instruction,
+            "ingredients": ingredients,
             "ip_address": ip_address,
             "created_at": current_datetime
         })
@@ -57,8 +61,11 @@ def create_chat():
             "status": "success",
             "message": "Report created successfully",
             "data": {
-                "result": response.text.strip(),
-                "ingredients": ingredients
+                "dish_name": dish_name,
+                "instruction": instruction,
+                "ingredients": ingredients,
+                "ip_address": ip_address,
+                "created_at": current_datetime
             }
         }),
         status=200,
@@ -77,8 +84,9 @@ def get_chat_list():
     def mapChat(item):
         return {
             "id": str(item.get("_id")),
-            "result": item.get("result"),
-            "user_ingredients": item.get("user_ingredients"),
+            "dish_name": item.get("dish_name"),
+            "instruction": item.get("instruction"),
+            "ingredients": item.get("ingredients"),
             "ip_address": item.get("ip_address")
         }
 

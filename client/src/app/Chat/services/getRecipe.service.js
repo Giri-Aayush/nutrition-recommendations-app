@@ -20,8 +20,9 @@ export const useRecipeFromIngredientsService = () => {
     isSuccess,
     isError,
     mutate,
-    result: data?.data?.data?.result ? JSON.parse(data?.data?.data?.result) : null,
+    dishName: data?.data?.data?.dish_name,
     ingredients: data?.data?.data?.ingredients,
+    instruction: data?.data?.data?.instruction,
   }
 }
 

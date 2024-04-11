@@ -38,8 +38,9 @@ const fetchChatHistoryAPI = async () => {
     chats: response.data?.chats?.map(chat => {
       return {
         id: chat?.id,
-        result: JSON.parse(chat?.result),
-        ingredients: chat?.user_ingredients,
+        dishName: chat?.dish_name,
+        instruction: chat?.instruction,
+        ingredients: chat?.ingredients,
         ip_address: chat?.ip_address,
       }
     }),

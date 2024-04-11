@@ -1,53 +1,13 @@
-/* eslint-disable no-regex-spaces */
 import styled from '@emotion/styled'
-import { useMemo } from 'react'
 import { Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
-function getSeparation(result) {
-  let titleMatch = result.match(/\[TITLE\]: (.*)\n/)
-  let title = titleMatch ? titleMatch[1] : 'No title found'
-  let ingredientsMatches = result.matchAll(/\[INGREDIENTS\]:\n((?:  - .*\n)*)/g)
-  let directionsMatch = result.match(/\[DIRECTIONS\]:\n((?:  - .*\n)*)/)
-  let directions = directionsMatch ? directionsMatch[1] : 'No directions found'
-
-  let ingredients = ''
-  for (let match of ingredientsMatches) {
-    ingredients += match[1]
-  }
-
-  ingredients = ingredients
-    .split('\n')
-    .filter(Boolean)
-    .map(item => `${item.replace(/  - \d: /, '')}`)
-
-  if (directions) {
-    directions = directions
-      .split('\n')
-      .filter(Boolean)
-      .map(item => `${item.replace(/  - \d: /, '')}`)
-  }
-
-  return { title, ingredients, directions }
-}
-
-const Display = ({ inputIngredients, result }) => {
-  const { title, ingredients, directions } = useMemo(() => {
-    return getSeparation(result)
-  }, [result])
-
+const Display = ({ dishName, ingredients, instruction }) => {
   return (
     <Main>
       <Root>
-        <Typography variant="subtitle2" fontWeight="600" color="primary">
-          Ingredients by picked you
-        </Typography>
-        <Typography variant="subtitle1" fontWeight="600">
-          {inputIngredients.join(', ')}
-        </Typography>
-        <hr />
         <Typography variant="h3" fontWeight="600">
-          {title}
+          {dishName}
         </Typography>
 
         <br />
@@ -66,7 +26,7 @@ const Display = ({ inputIngredients, result }) => {
           Steps to Follow
         </Typography>
         <ol>
-          {directions.map((direction, index) => (
+          {instruction.map((direction, index) => (
             <Typography variant="subtitle1" key={index} component="li">
               {direction}
             </Typography>
@@ -78,8 +38,9 @@ const Display = ({ inputIngredients, result }) => {
 }
 
 Display.propTypes = {
-  inputIngredients: PropTypes.array,
-  result: PropTypes.string,
+  dishName: PropTypes.string,
+  ingredients: PropTypes.array,
+  instruction: PropTypes.array,
 }
 const Main = styled.div`
   display: flex;

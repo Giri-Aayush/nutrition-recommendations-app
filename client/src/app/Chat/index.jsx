@@ -2,10 +2,11 @@ import styled from '@emotion/styled'
 import Logo from '../../components/Logo'
 import Display from './components/display'
 import Form from './components/form'
-import { Skeleton, Typography } from '@mui/material'
+import { Skeleton, Typography, Box } from '@mui/material'
 import { useRecipeFromIngredientsService } from './services/getRecipe.service'
 import { useChatHistoryService } from './services/getChatHistory.service'
 import { useEffect } from 'react'
+import MarkChatUnreadRoundedIcon from '@mui/icons-material/MarkChatUnreadRounded'
 
 const Chat = () => {
   const { chats, isLoading: isHistoryLoading, refetch } = useChatHistoryService()
@@ -65,8 +66,46 @@ const Chat = () => {
             Something went wrong! Please try again...
           </Typography>
         )}
+
+        {isHistoryLoading === false && chats?.length === 0 && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+            }}>
+            <MarkChatUnreadRoundedIcon
+              color="primary"
+              sx={{
+                fontSize: '80px',
+                marginBottom: '20px',
+              }}
+            />
+            <Typography
+              variant="subtitle2"
+              color="text.secondary"
+              sx={{
+                textAlign: 'center',
+                fontWeight: '500',
+              }}>
+              No chat history available.
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              sx={{
+                textAlign: 'center',
+                fontWeight: '500',
+              }}>
+              Start by typing your ingredients !
+            </Typography>
+          </Box>
+        )}
+
         {chats?.map(item => (
-          <Display key={item.id} inputIngredients={item?.ingredients} result={item?.result} />
+          <Display key={item.id} inputIngredients={item?.inputIngredients} ingredients={item?.ingredients} instruction={item?.instruction} dishName={item?.dishName} />
         ))}
       </Main>
     </Root>
