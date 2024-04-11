@@ -2,10 +2,18 @@ import styled from '@emotion/styled'
 import { Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
-const Display = ({ dishName, ingredients, instruction }) => {
+const Display = ({ userIngredients, dishName, ingredients, instruction, isCurrent }) => {
   return (
     <Main>
-      <Root>
+      <Root className={isCurrent ? 'current' : ''}>
+        <Typography variant="subtitle2" fontWeight="600" color="primary">
+          Ingredients by picked you
+        </Typography>
+        <Typography variant="subtitle1" fontWeight="600">
+          {userIngredients.join(', ')}
+        </Typography>
+        <hr />
+
         <Typography variant="h3" fontWeight="600">
           {dishName}
         </Typography>
@@ -39,6 +47,7 @@ const Display = ({ dishName, ingredients, instruction }) => {
 
 Display.propTypes = {
   dishName: PropTypes.string,
+  userIngredients: PropTypes.array,
   ingredients: PropTypes.array,
   instruction: PropTypes.array,
 }
@@ -76,6 +85,12 @@ const Root = styled.div`
     height: 1px;
     background: #61a77d77;
     margin: 20px 0;
+  }
+  &.current {
+    border: 1px solid ${({ theme }) => theme.palette.primary.main};
+    ::before {
+      background: ${({ theme }) => theme.palette.primary.main};
+    }
   }
 `
 

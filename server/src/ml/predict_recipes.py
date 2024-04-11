@@ -2,6 +2,7 @@ import numpy as np
 import faiss
 import pickle
 import pandas as pd
+import json
 
 embedding_dim = 300
 with open('./src/ml/vocab_mappings.pkl', 'rb') as f:
@@ -28,9 +29,13 @@ index.add(embeddings)
 def predict(ls, k):
     query_embedding = get_embeddings(ls)
     _, indices = index.search(np.expand_dims(query_embedding, axis=0), k)
-    po = []
-    se = []
+
+    dish = []
+
     for idx in indices[0]:
-        po.append(recipes['directions'][idx])
-        se.append(recipes['title'][idx])
-    return se, po
+        dish.append({
+            "dish_name": recipes['title'][idx],
+            "ingredients": json.loads(recipes['ingredients'][idx]),
+            "instruction": json.loads(recipes['directions'][idx])
+        })
+    return dish

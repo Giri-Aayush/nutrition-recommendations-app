@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 
 const Form = ({ onSubmit }) => {
   const [currentIngredient, setCurrentIngredient] = useState('')
+  const [recipeNumber, setRecipeNumber] = useState('')
   const [ingredients, setIngredients] = useState([])
   return (
     <Root
@@ -15,7 +16,7 @@ const Form = ({ onSubmit }) => {
         event.preventDefault()
         setIngredients([])
         setCurrentIngredient('')
-        onSubmit(ingredients)
+        onSubmit({ ingredients, recipeNumber })
       }}>
       {ingredients.map((ingredient, index) => (
         <Field key={index}>
@@ -40,12 +41,22 @@ const Form = ({ onSubmit }) => {
       <Main>
         <Button
           onClick={() => {
+            if (!currentIngredient) return
             setCurrentIngredient('')
             setIngredients([...ingredients, currentIngredient])
           }}>
           <AddRoundedIcon fontSize="medium" />
         </Button>
         <Input placeholder="Enter Your Ingredient..." type="text" value={currentIngredient} onChange={event => setCurrentIngredient(event.target.value)} />
+        <Input
+          className="recCount"
+          placeholder="Enter number of recipes..."
+          type="text"
+          value={recipeNumber}
+          onChange={event => {
+            setRecipeNumber(event.target.value.replace(/\D/g, ''))
+          }}
+        />
         <Button
           type="submit"
           sx={{

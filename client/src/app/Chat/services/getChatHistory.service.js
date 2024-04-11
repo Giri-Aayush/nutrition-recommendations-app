@@ -41,6 +41,7 @@ const fetchChatHistoryAPI = async () => {
         dishName: chat?.dish_name,
         instruction: chat?.instruction,
         ingredients: chat?.ingredients,
+        userIngredients: chat?.user_ingredients,
         ip_address: chat?.ip_address,
       }
     }),

@@ -20,18 +20,21 @@ export const useRecipeFromIngredientsService = () => {
     isSuccess,
     isError,
     mutate,
-    dishName: data?.data?.data?.dish_name,
-    ingredients: data?.data?.data?.ingredients,
-    instruction: data?.data?.data?.instruction,
+    recipeIds: data?.recipeIds || [],
   }
 }
 
-const getRecipeAPI = data => {
-  return APIInstance({
+const getRecipeAPI = async data => {
+  const response = await APIInstance({
     method: 'POST',
     url: '/chat/create',
     data: {
       ingredients: data.ingredients.map(ingredient => ingredient),
+      recipe_number: data.recipeNumber,
     },
   })
+
+  return {
+    recipeIds: response.data.data.dish_id_list.map(id => id),
+  }
 }

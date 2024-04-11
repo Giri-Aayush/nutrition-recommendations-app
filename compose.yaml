@@ -27,7 +27,6 @@ services:
     environment:
       - MONGO_URI=mongodb://admin:password@mongodb:27017
       - ENVIRONMENT=development
-      - ML_URI=https://b46c-103-15-228-94.ngrok-free.app
   mongodb:
     image: mongo:latest
     ports:

@@ -10,7 +10,7 @@ import MarkChatUnreadRoundedIcon from '@mui/icons-material/MarkChatUnreadRounded
 
 const Chat = () => {
   const { chats, isLoading: isHistoryLoading, refetch } = useChatHistoryService()
-  const { isError, isLoading, isSuccess, mutate } = useRecipeFromIngredientsService()
+  const { isError, isLoading, isSuccess, mutate, recipeIds } = useRecipeFromIngredientsService()
 
   useEffect(() => {
     refetch()
@@ -23,9 +23,8 @@ const Chat = () => {
       </Header>
       <Main>
         <Form
-          onSubmit={ingredients => {
-            console
-            mutate({ ingredients })
+          onSubmit={({ ingredients, recipeNumber }) => {
+            mutate({ ingredients, recipeNumber })
           }}
         />
         {(isLoading || isHistoryLoading) && (
@@ -105,7 +104,7 @@ const Chat = () => {
         )}
 
         {chats?.map(item => (
-          <Display key={item.id} inputIngredients={item?.inputIngredients} ingredients={item?.ingredients} instruction={item?.instruction} dishName={item?.dishName} />
+          <Display isCurrent={recipeIds.includes(item.id)} key={item.id} userIngredients={item?.userIngredients} ingredients={item?.ingredients} instruction={item?.instruction} dishName={item?.dishName} />
         ))}
       </Main>
     </Root>

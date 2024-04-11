@@ -19,7 +19,18 @@ def create_chat():
     data = request.get_json()
 
     ingredients = data.get("ingredients", [])
+    recipe_number = int(data.get("recipe_number", 0))
     ip_address = request.remote_addr
+
+    if recipe_number <= 0 or recipe_number >= 5:
+        return Response(
+            response=json.dumps({
+                "status": "error",
+                "message": "Recipe number must be between 1 and 5"
+            }),
+            status=400,
+            mimetype="application/json",
+        )
 
     if len(ingredients) == 0:
         return Response(
@@ -31,41 +42,42 @@ def create_chat():
             mimetype="application/json",
         )
 
-    dish_name_out, instruction_str_out = predict(ingredients, 1)
+    dish_list = predict(ingredients, recipe_number)
 
-    dish_name = dish_name_out[0],
-    instruction = jsonpy.loads(instruction_str_out[0])
+    print(dish_list)
 
-    current_datetime = datetime.datetime.now()
+    current_dish_id_list = []
 
-    try:
-        chat = chats_db.insert_one({
-            "dish_name": dish_name,
-            "instruction": instruction,
-            "ingredients": ingredients,
-            "ip_address": ip_address,
-            "created_at": current_datetime
-        })
-    except Exception as e:
-        return Response(
-            response=json.dumps({
-                "status": "error",
-                "message": str(e)
-            }),
-            status=500,
-            mimetype="application/json",
-        )
+    for dish in dish_list:
+        print(dish)
+        current_datetime = datetime.datetime.now()
+        try:
+            chat = chats_db.insert_one({
+                "dish_name": dish['dish_name'],
+                "instruction": dish['instruction'],
+                "ingredients": dish['ingredients'],
+                "user_ingredients": ingredients,
+                "ip_address": ip_address,
+                "created_at": current_datetime
+            })
+        except Exception as e:
+            return Response(
+                response=json.dumps({
+                    "status": "error",
+                    "message": str(e)
+                }),
+                status=500,
+                mimetype="application/json",
+            )
+
+        current_dish_id_list.append(str(chat.inserted_id))
 
     return Response(
         response=json.dumps({
             "status": "success",
             "message": "Report created successfully",
             "data": {
-                "dish_name": dish_name,
-                "instruction": instruction,
-                "ingredients": ingredients,
-                "ip_address": ip_address,
-                "created_at": current_datetime
+                "dish_id_list": current_dish_id_list
             }
         }),
         status=200,
@@ -87,6 +99,7 @@ def get_chat_list():
             "dish_name": item.get("dish_name"),
             "instruction": item.get("instruction"),
             "ingredients": item.get("ingredients"),
+            "user_ingredients": item.get("user_ingredients"),
             "ip_address": item.get("ip_address")
         }
 
