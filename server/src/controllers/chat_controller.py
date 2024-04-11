@@ -44,12 +44,9 @@ def create_chat():
 
     dish_list = predict(ingredients, recipe_number)
 
-    print(dish_list)
-
     current_dish_id_list = []
 
     for dish in dish_list:
-        print(dish)
         current_datetime = datetime.datetime.now()
         try:
             chat = chats_db.insert_one({

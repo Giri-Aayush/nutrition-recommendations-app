@@ -29,7 +29,7 @@ body {
     border-radius: 2px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: #1366de; /* creates padding around scroll thumb */
+    background-color: #3bf787; /* creates padding around scroll thumb */
     border-radius: 2px;
   }
 

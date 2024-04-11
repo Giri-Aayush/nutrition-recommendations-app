@@ -37,7 +37,7 @@ To run the application, follow the steps below based on your operating system:
 3. Start the application using Docker Compose:
 
    ```
-   docker-compose up
+   docker compose up
    ```
 
 4. Wait for the containers to build and start. Once the process is complete, you can access the application in your web browser at [http://localhost:3000](http://localhost:3000).
