@@ -2,13 +2,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import ErrorBoundary from '@components/ErrorBoundary'
 
-import address from './routes.address'
 import Chat from './app/Chat'
 
 const router = createBrowserRouter(
   [
     {
-      path: address.root,
+      path: `/`,
       errorElement: <ErrorBoundary />,
       element: <Chat />,
     },
